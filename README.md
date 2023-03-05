@@ -1,2 +1,2 @@
 # Accessibility Notifier App
-Notifies you when some websites can't be reached for some reason
+Checks the accessibility of given websites
