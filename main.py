@@ -99,7 +99,6 @@ class AccessibilityNotifier:
                         # show error msg if error
                         for ip in ips:
                             print(self.ping_ip(ip, target=target))
-                            # print(self.check_ip(ip, target=target))
                     else:
                         # invalid input data
                         sys.exit(f"Invalid input: {line}")
@@ -152,7 +151,7 @@ class AccessibilityNotifier:
         Gets information about target ip address using given port.
 
         :returns string with
-        time, host name, ip address, road trip time, port, status.
+        time, host name, ip address, round trip time, port, status.
         """
 
         try:
@@ -187,7 +186,7 @@ class AccessibilityNotifier:
         Check accessibility of a host using ICMP protocol (ping).
 
         :returns string with
-        time, host name, ip address, road trip time, port, status.
+        time, host name, ip address, round trip time, port, status.
         """
         try:
             host_name, rtt = self.check_ping(ip)
