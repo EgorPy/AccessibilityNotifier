@@ -156,7 +156,8 @@ class AccessibilityNotifier:
         """
 
         try:
-            request = self.get_request(ip, port, timeout=self.timeout)
+            request = self.get_request(ip, "80" if port == "443" else port,
+                                       timeout=self.timeout)
             is_opened_port = self.scan_port(ip, int(port))
         except requests.exceptions.ConnectionError:
             return f"{datetime.now()} | \
@@ -188,8 +189,10 @@ class AccessibilityNotifier:
         :returns string with
         time, host name, ip address, road trip time, port, status.
         """
-
-        host_name, rtt = self.check_ping(ip)
+        try:
+            host_name, rtt = self.check_ping(ip)
+        except subprocess.CalledProcessError:
+            return f"Connection to {ip} timed out."
 
         return f"{datetime.now()} | \
 {target:^20} | \
@@ -222,12 +225,9 @@ class AccessibilityNotifier:
         :returns tuple that contains host name and Road Trip Time.
         """
 
-        try:
-            response = subprocess.check_output("ping -n 1 " + hostname,
-                                               shell=True).decode(
-                "utf-8").split("\n")
-        except subprocess.CalledProcessError:
-            return f"Connection to {hostname} timed out."
+        response = subprocess.check_output("ping -n 1 " + hostname,
+                                           shell=True).decode(
+            "utf-8").split("\n")
 
         for i, line in enumerate(response):
             if line == "\r":
